@@ -1,0 +1,64 @@
+{% extends "base/base.html" %}
+
+{% block page_body %}
+
+<div class="container overflow-hidden">
+  <div class="row gx-5">
+    <div class="col">
+     <div class="p-3 border bg-light">
+      <div class="card">
+           <div class="card-header">
+               <h5 class="card-title">Nowy użytkownik</h5>
+           </div>
+           <div class="card-body">
+               <form method="post" class="form-signin">
+               <div class="mb-3">
+                    {{ form.csrf_token }}
+                   {% for error in form.username.errors %}
+                        {{error}}
+                    {% endfor %}
+                    {{ form.username.label(class_="form-label") }}
+                    {{ form.username(class_="form-control") }}
+               </div>
+               <div class="mb-3">
+                   {% for error in form.email.errors %}
+                        {{error}}
+                    {% endfor %}
+                    {{ form.email.label(class_="form-label") }}
+                    {{ form.email(class_="form-control") }}
+               </div>
+               <div class="mb-3">
+                    {% for error in form.password.errors %}
+                        {{error}}
+                    {% endfor %}
+                    {{ form.password.label(class_="form-label") }}
+                    {{ form.password(class_="form-control") }}
+               </div>
+               <div class="mb-3">
+                    {% for error in form.repeat_password.errors %}
+                        {{error}}
+                    {% endfor %}
+                    {{ form.repeat_password.label(class_="form-label") }}
+                    {{ form.repeat_password(class_="form-control") }}
+               </div>
+               <div class="mb-3">
+                    {% for error in form.role.errors %}
+                        {{error}}
+                    {% endfor %}
+                    {{ form.role.label(class_="form-label") }}
+                    {{ form.role(class_="form-control") }}
+               </div>
+               <div class="mb-3">
+                    <button class="btn btn-lg btn-dark btn-block" type="submit">Wyślij</button>
+               </div>
+               </form>
+           </div>
+     </div>
+    </div>
+  </div>
+ </div>
+</div>
+
+
+
+{% endblock %}

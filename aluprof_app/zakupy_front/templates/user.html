@@ -1,0 +1,95 @@
+{% extends "base/base.html" %}
+
+{% block page_body %}
+
+<div class="container overflow-hidden">
+  <div class="row gx-5">
+    <div class="col">
+     <div class="p-3 border bg-light">
+       <div class="card">
+           <div class="card-header">
+               <h5 class="card-title">{{ kto }}</h5>
+           </div>
+           <div class="card-body">
+               <div class="mb-3">
+                    {{ form.csrf_token }}
+                    {{ form.username.label(class_="form-label") }}
+                    {{ form.username(class_="form-control", disabled=True) }}
+               </div>
+               <div class="mb-3">
+                    {{ form.email.label(class_="form-label") }}
+                    {{ form.email(class_="form-control", disabled=True) }}
+
+           </div>
+       </div>
+     </div>
+    </div>
+    </div>
+    <div class="col">
+      <div class="p-3 border bg-light">
+          <div class="card">
+           <div class="card-header">
+               <h5 class="card-title">Zmiana hasła:</h5>
+           </div>
+           <div class="card-body">
+                <form method="post" class="form-signin">
+                    {{ form2.csrf_token }}
+                    {% if current_user.email == form.email.data %}
+                    <div class="mb-3">
+                    {% for error in form2.old_password.errors %}
+                    <div>
+                        <div class="alert alert-danger alert-dismissible" role="alert"  onclick="delete_flash(this)">
+                            <strong >
+                                {{error}}
+                            </strong>
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                    {{ form2.old_password.label(class_="form-label") }}
+                    {{ form2.old_password(class_="form-control") }}
+                    </div>
+                    {% else %}
+                       <div class="mb-3">
+                    {% for error in form2.old_password.errors %}
+                    <div>
+                        <div class="alert alert-danger alert-dismissible" role="alert"  onclick="delete_flash(this)">
+                            <strong >
+                                {{error}}
+                            </strong>
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                    {{ form2.old_password.label(class_="form-label") }}
+                    {{ form2.old_password(class_="form-control", disabled=True) }}
+                    </div>
+                    {% endif %}
+                    <div class="mb-3">
+                        {% for error in form2.new_password.errors %}
+                            <div>
+                                <div class="alert alert-danger alert-dismissible" role="alert"  onclick="delete_flash(this)">
+                                    <strong >
+                                        {{error}}
+                                    </strong>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        {{ form2.new_password.label(class_="form-label") }}
+                        {{ form2.new_password(class_="form-control") }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form2.new_2_password.label(class_="form-label") }}
+                        {{ form2.new_2_password(class_="form-control") }}
+                    </div>
+                <button class="btn btn-lg btn-dark btn-block" type="submit">Wyślij</button>
+                </form>
+           </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}

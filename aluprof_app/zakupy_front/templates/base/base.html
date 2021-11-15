@@ -1,0 +1,71 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="author" content="Zbigniew Manowski">
+    <title>Aluprof</title>
+    <!-- Bootstrap core CSS -->
+    <link href="{{ url_for('zakupy_front.static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('zakupy_front.static', filename='css/dashboard.css') }}" rel="stylesheet">
+    {% block css %}
+    {% endblock %}
+  </head>
+  <body>
+    <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
+      <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Aluprof</a>
+      {% if current_user.is_authenticated %}
+        <a class="btn btn-dark " href="{{ url_for('zakupy_front.logout') }}"><span data-feather="log-out"></span> Wyloguj: {{ current_user.username }}</a>
+      {% else %}
+        <a class="btn btn-dark" href="{{ url_for('zakupy_front.login') }}"><span data-feather="log-in"></span> Zaloguj</a>
+      {% endif %}
+    </nav>
+    <div class="container-fluid">
+      <div class="row">
+         {% include 'menu.html' %}
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4 ">
+         {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+        <div>
+                  {% for category, message in messages %}
+                  <div class="alert alert-{{ category }} alert-dismissible" role="alert"  onclick="delete_flash(this)">
+                    <strong >
+                      {{ message }}
+                    </strong>
+                  </div>
+                  {% endfor %}
+        </div>
+          {% endif %}
+        {% endwith %}
+            {% block page_body %}   {% endblock %}
+        </main>
+      </div>
+    </div>
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="{{ url_for('zakupy_front.static', filename='js/jquery-3.2.1.slim.min.js') }}" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="{{ url_for('zakupy_front.static', filename='js/bootstrap.min.js') }}"></script>
+    {% block scripts %}   {% endblock %}
+    <!-- Icons -->
+    <script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
+    <script>
+      feather.replace()
+    </script>
+    <!-- Deleting Obj -->
+    <script>
+        function delete_flash(flash){
+            $(flash).parent().remove()
+        }
+    </script>
+    <!-- Graphs -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+    <!-- Loading spinner -->
+    <script type="text/javascript">// <![CDATA[
+        function loading(){
+            $("#loading").show();
+            $("#content").hide();
+        }
+    // ]]></script>
+
+  </body>
+</html>

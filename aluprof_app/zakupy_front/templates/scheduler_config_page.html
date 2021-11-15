@@ -1,0 +1,52 @@
+{% extends "base/base.html" %}
+
+{% block page_body %}
+
+<div class="container overflow-hidden">
+  <div class="row gx-5">
+    <div class="col">
+     <div class="p-3 border bg-light">
+       <div class="card">
+           <div class="card-header">
+               <h5 class="card-title">Harmonogramy</h5>
+           </div>
+           <div class="card-body">
+                <form method="post" class="form-signin">
+                    {{ raport.csrf_token }}
+               <div class="mb-3">
+                   {{ raport.schedule_time.label }}
+                   {{ raport.schedule_time }}
+
+               </div>
+               <div class="mb-3">
+                   <button class="btn btn-lg btn-dark btn-block" type="submit">Wyślij</button>
+           </div>
+           </form>
+
+
+       </div>
+     </div>
+    </div>
+    </div>
+    <div class="col">
+      <div class="p-3 border bg-light">
+          <div class="card">
+           <div class="card-header">
+               <h5 class="card-title">Lista harmonogramów</h5>
+           </div>
+           <div class="card-body">
+               <ul>
+               {% for schedul in list_of_shedules %}
+                <li>{{ schedul }}</li>
+               {% endfor %}
+                   </ul>
+
+           </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}

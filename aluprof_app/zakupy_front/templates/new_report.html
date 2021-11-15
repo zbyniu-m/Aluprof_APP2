@@ -1,0 +1,107 @@
+{% extends "base/base.html" %}
+
+{% block page_body %}
+
+<div class="container overflow-hidden">
+  <div class="row gx-5">
+    <div class="col">
+     <div class="p-3 border bg-light">
+      <div class="card">
+           <div class="card-header">
+               <h5 class="card-title">{{ title }}</h5>
+           </div>
+           <div class="card-body">
+               <form method="post" class="form-signin">
+               <div class="mb-3">
+                   {{ form.csrf_token }}
+                   {% for error in form.sql_connection.errors %}
+                        <div class="alert alert-warning" role="alert">{{error}}</div>
+                   {% endfor %}
+                   {{ form.sql_connection.label(class_="form-label") }}
+                   {{ form.sql_connection(class_="form-control") }}
+               </div>
+               <div class="mb-3">
+                   {% for error in form.owner.errors %}
+                        <div class="alert alert-warning" role="alert">{{error}}</div>
+                    {% endfor %}
+                    {{ form.owner.label(class_="form-label") }}
+                    {{ form.owner(class_="form-control") }}
+               </div>
+               <div class="mb-3">
+                   {% for error in form.query_name.errors %}
+                        <div class="alert alert-warning" role="alert">{{error}}</div>
+                    {% endfor %}
+                    {{ form.query_name.label(class_="form-label") }}
+                    {{ form.query_name(class_="form-control") }}
+               </div>
+               <div class="mb-3">
+                    {% for error in form.description.errors %}
+                        <div class="alert alert-warning" role="alert">{{error}}</div>
+                    {% endfor %}
+                    {{ form.description.label(class_="form-label") }}
+                    {{ form.description(class_="form-control") }}
+               </div>
+               <div class="mb-3 form-check">
+                    {% for error in form.schedule.errors %}
+                        <div class="alert alert-warning" role="alert">{{error}}</div>
+                    {% endfor %}
+                    {{ form.schedule(class_="form-check-input") }} {{ form.schedule.label(class_="form-check-label") }}
+
+               </div>
+               <div class="mb-3">
+                    {% for error in form.schedule_interval.errors %}
+                        <div class="alert alert-warning" role="alert">{{error}}</div>
+                    {% endfor %}
+                    {{ form.schedule_interval.label(class_="form-label") }}
+                    {{ form.schedule_interval(class_="form-control") }}
+               </div>
+                           <div class="mb-3">
+                    {% for error in form.version.errors %}
+                        <div class="alert alert-warning" role="alert">{{error}}</div>
+                    {% endfor %}
+                    {{ form.version.label(class_="form-label") }}
+                    {{ form.version(class_="form-control") }}
+               </div>
+               <div class="mb-3">
+                    {% for error in form.query_text.errors %}
+                        <div class="alert alert-warning" role="alert">{{error}}</div>
+                    {% endfor %}
+                    {{ form.query_text.label(class_="form-label") }}
+                    {{ form.query_text(class_="form-control") }}
+               </div>
+               <div class="mb-3">
+                    {% for error in form.localization.errors %}
+                   <div class="alert alert-warning" role="alert">{{error}}</div>
+                    {% endfor %}
+                    {{ form.localization.label(class_="form-label") }}
+                    {{ form.localization(class_="form-control") }}
+               </div>
+               <div class="mb-3 form-check">
+                    {% for error in form.restricted.errors %}
+                        <div class="alert alert-warning" role="alert">{{error}}</div>
+                    {% endfor %}
+                    {{ form.restricted(class_="form-check-input") }}{{ form.restricted.label(class_="form-check-label")}}
+               </div>
+               <div class="mb-3">
+                    <button class="btn btn-lg btn-dark btn-block" type="submit">Wyślij</button>
+               </div>
+               </form>
+           </div>
+     </div>
+     <div class="card">
+  <div class="card-body">
+    <h5 class="card-title">Legenda</h5>
+      <p class="card-text">W pole <b>Zapytania SQL</b> można dodać więcej zapytań odzielając je średnikami ";". Każde z tych zapytań zostanie wywołane i zapisane w jednym pliku w oddzielnej zakładce.</p>
+      <p class="card-text">Zostawiając pole <b>lokalizacja pliku</b> puste, wtedy zapisze się domyślna lokalizacja do eksportu raportów.</p>
+
+  </div>
+</div>
+     </div>
+  </div>
+ </div>
+
+</div>
+
+
+
+{% endblock %}

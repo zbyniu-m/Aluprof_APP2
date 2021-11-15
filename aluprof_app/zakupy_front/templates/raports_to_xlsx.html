@@ -1,0 +1,83 @@
+{% extends "base/base.html" %}
+{% block css %}
+    <link href="{{ url_for('zakupy_front.static', filename='css/jquery.dataTables.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('zakupy_front.static', filename='css/buttons.dataTables.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('zakupy_front.static', filename='css/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
+{% endblock %}{% block page_body %}
+<div class="card" >
+    <div class="card-header" style=" background-image: linear-gradient(to right, rgba(0,0,0,0.1) , rgba(0,0,0,0.8)">
+      <h3>Wydruk raportów do XLSX</h3>
+    </div>
+</div>
+<hr style="height:2px;border-width:0;color:gray;background-color:gray">
+ <div id="loading" style="display: none; margin-left: auto; margin-right: auto; width: 220px; height: 19px; background: url({{ url_for('zakupy_front.static', filename='pic/ajax-loader.gif') }}) no-repeat center center; cursor: wait;"></div>
+ <table id="data" class="table table-sm table-striped table-bordered table-condensed" style="width:100%">
+    <thead class="thead-dark">
+      <tr>
+          <th>Raport wykonany dla</th>
+          <th>Nazwa raportu</th>
+          <th>Opis</th>
+          <th align="center" data-toggle="tooltip" data-placement="top" title="Data ostatniego utworzenia raportu">Utworzono</th>
+          <th align="center" data-toggle="tooltip" data-placement="top" title="Czas potrzebny do wykonania raportu">Czas tworzenia</th>
+          <th align="center" data-toggle="tooltip" data-placement="top" title="Harmonogram">H</th>
+          <th align="center">Utwórz</th>{% if current_user.role_id == 2 %}
+          <th></th>{% endif %}
+      </tr>
+    </thead>
+    <tbody>{% for raport in list_of_raports %}
+            <tr>
+                <td>{{ raport['owner_tables']['username'] }}</td>
+                <td>{{ raport['query_name'] }}</td>
+                <td>{{ raport['description'] }}</td>
+                <td>{% if raport['last_creation'] %}{{ raport['last_creation'].strftime('%Y-%m-%d') }}{% else %}{% endif %}</td>
+                <td>{% if raport['creation_time'] %}{{ raport['creation_time'].strftime('%H:%M:%S') }}{% else %}{% endif %}</td>
+                <td align="center" data-toggle="tooltip" data-placement="top" title="{% if raport['schedule'] %}{% if raport['schedule_interval'] == 'd' %}dzienny{% endif %}{% if raport['schedule_interval'] == 'w' %}tygodniowy{% endif %}{% if raport['schedule_interval'] == 'm' %}miesięczny{% endif %}{% if raport['schedule_interval'] == 'y' %}roczny{% endif %}{% else %}brak{% endif %}">
+                    {% if raport['schedule'] %}{% if raport['schedule_interval'] == 'd' %}d{% endif %}{% if raport['schedule_interval'] == 'w' %}t{% endif %}{% if raport['schedule_interval'] == 'm' %}m{% endif %}{% if raport['schedule_interval'] == 'y' %}r{% endif %}{% else %}
+                    <span data-feather="x-circle"></span>{% endif %}
+                </td>
+                <td align="center" data-toggle="tooltip" data-placement="left" title="{{ raport['localization'] }}" ><a  class="btn btn-success" href="{{ url_for('zakupy_front.raports_to_xlsx') }}/{{ raport['id'] }}" onclick="loading();"><span data-feather="file-plus"></span></a></td>
+                {% if current_user.role_id == 2 %}<td align="center">
+                    <a class="btn btn-primary" href="{{ url_for('zakupy_front.edit_raports', raport_id = raport['id']) }}"><span data-feather="edit-2"></span></a>
+                    <a class="btn btn-danger" href="{{ url_for('zakupy_front.delete_raport', raport_id = raport['id']) }}" onclick="return confirm('Czy napewno usunąć ten raport?');"><span data-feather="trash-2"></span></a>
+                </td>
+                {% endif %} </tr>
+      {% endfor %}</tbody>
+  </table>{% endblock %}{% block scripts %}{{ super() }}
+    <script type="text/javascript" charset="utf8" src="{{ url_for('zakupy_front.static', filename='js/jquery-3.5.1.js') }}"></script>
+    <script type="text/javascript" charset="utf8" src="{{ url_for('zakupy_front.static', filename='js/jquery.dataTables.min.js') }}"></script>
+    <script type="text/javascript" charset="utf8" src="{{ url_for('zakupy_front.static', filename='js/dataTables.bootstrap4.min.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            $('#data').DataTable( {
+                scrollY: '80vh',
+                scrollCollapse: true,
+                paging:   false,
+                dom: 'Bfrtip',
+                "language": {
+                            "decimal":        ",",
+                            "emptyTable":     "Brak danych",
+                            "info":           "Od _START_ do _END_ z _TOTAL_ wszystkich danych",
+                            "infoEmpty":      "Od 0 do 0 z 0 wszystkich danych",
+                            "infoFiltered":   "(Filtr _MAX_ wszystkich danych)",
+                            "infoPostFix":    "",
+                            "thousands":      ",",
+                            "lengthMenu":     "Pokaż _MENU_ danych",
+                            "loadingRecords": "Wczytywanie...",
+                            "processing":     "Przetwarzanie...",
+                            "search":         "Szukaj:",
+                            "zeroRecords":    "Brak wyników",
+                            "paginate": {
+                                "first":      "Pierwsza",
+                                "last":       "Ostatnia",
+                                "next":       "Następna",
+                                "previous":   "Poprzedani"
+                            },
+                            "aria": {
+                                "sortAscending":  ": activate to sort column ascending",
+                                "sortDescending": ": activate to sort column descending"
+                            }
+                }
+            } );
+        } );
+    </script>
+{% endblock %}
